@@ -112,9 +112,16 @@ def window_Pemesanan():
     durasi_combobox = Combobox(pemesanan_frame, values=list(range(1, 25)), textvariable=Durasi)
     durasi_combobox.grid(row=6, column=1, padx=10, pady=10, sticky='w')
 
-    # Menambahkan input untuk uang pengguna
+    # Menambahkan validasi untuk memastikan input uang hanya angka
+    def validate_input(new_value):
+        if new_value.isdigit() or new_value == "":
+            return True
+        else:
+            return False
+
+    # Mengatur validasi pada Entry untuk uang
+    Entry(pemesanan_frame, textvariable=UangUser, validate="key", validatecommand=(pemesanan_frame.register(validate_input), "%P")).grid(row=7, column=1, padx=10, pady=10, sticky='w')
     Label(pemesanan_frame, text="Uang Anda (Rp):", bg='light blue').grid(row=7, column=0, padx=10, pady=10, sticky='e')
-    Entry(pemesanan_frame, textvariable=UangUser).grid(row=7, column=1, padx=10, pady=10, sticky='w')
 
     # Menambahkan tombol bayar
     Button(pemesanan_frame, text="Sewa", command=lambda: sewa_button_clicked(lapangan_choice, Durasi, UangUser, WaktuMulai), bg='gold', fg='black').grid(row=8, column=0, columnspan=4, padx=20, pady=20, sticky='n')
@@ -141,7 +148,6 @@ def kembalian(lapangan_choice, Durasi, UangUser, WaktuMulai, total):
         # Uang tidak cukup, tampilkan peringatan
         messagebox.showwarning("Peringatan", "Uang yang Anda masukkan tidak cukup. Silakan masukkan uang yang sesuai.")
         return  # Keluar dari fungsi untuk menghentikan proses lebih lanjut
-    
 
     TanggalBulan = calendar.get_date().strftime("%d %B %Y")
     kembalian = uang - total
@@ -208,4 +214,5 @@ app.grid_columnconfigure(0, weight=1)  # Membuat kolom pertama lebih fleksibel d
 app.grid_rowconfigure(0, weight=1)  # Membuat baris pertama lebih fleksibel dalam ukuran
 
 # Menampilkan jendela utama
+app.mainloop()
 app.mainloop()
